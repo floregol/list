@@ -4,6 +4,7 @@
 - Poster ICML - 14 June
 - CAMSAP paper (2 step classification?)
 - bibliotheque blanche
+- Renew permit
 
 # Academic
 - git lab/ datastes
@@ -33,4 +34,5 @@
 - Appart compte
 - Ask chlo to pay kiki
 - Collect wash machine
+
 
