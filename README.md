@@ -5,6 +5,7 @@
 - CAMSAP paper (2 step classification?)
 - bibliotheque blanche
 - Renew permit
+- Check pay
 
 # Academic
 - git lab/ datastes
