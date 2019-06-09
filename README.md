@@ -2,10 +2,11 @@
 - Give expense report ICLR
 - Sign report tracking form
 - Poster ICML - 14 June
-- CAMSAP paper (2 step classification?)
+- CAMSAP paper (Active Learning)
 - bibliotheque blanche
 - Renew permit
 - Check pay
+- Check phd
 
 # Academic
 - git lab/ datastes
