@@ -1,22 +1,23 @@
 # Time Sensitive
 - Give expense report ICLR
-- Sign report tracking form
-- Poster ICML - 14 June
 - CAMSAP paper (Active Learning)
 - bibliotheque blanche
 - Renew permit
-- Check pay
 - Check phd
+- Code BGCN
+- Paper Soumya
+
 
 # Academic
 - git lab/ datastes
 - active learning research
-- reading groups
 - review notes stephen
 - unified dataset analysis
 - chairs ikea 
 - Fix wifi computer
 - Read math for machine learning book
+- Make a list of things to keep in mind Mark
+- Particle filtering
 
 # Work
 - review cv
@@ -29,12 +30,10 @@
 # Other
 - buy headphone/ jey
 - paye hydro
-- Pay sopht loud show 60$
 - Pay melissa Bussell champagne
 - Pay airplane ticket mom 1100
 - Pay muberra 
 - Appart compte
-- Ask chlo to pay kiki
 - Collect wash machine
 
 
