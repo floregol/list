@@ -1,12 +1,13 @@
 # Time Sensitive
 - Give expense report ICLR
+- Make expense report ICML
 - CAMSAP paper (Active Learning)
-- bibliotheque blanche
 - Renew permit
 - Check phd
 - Code BGCN
 - Paper Soumya
-
+- Demenage Lea
+- Ikea Muberra
 
 # Academic
 - git lab/ datastes
@@ -31,7 +32,6 @@
 - buy headphone/ jey
 - paye hydro
 - Pay melissa Bussell champagne
-- Pay airplane ticket mom 1100
 - Pay muberra 
 - Appart compte
 - Collect wash machine
