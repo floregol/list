@@ -1,13 +1,29 @@
+# Today 
+
+- Aller chercher/ porter
+    - boule bleu
+- Faire node copying
+- Laver les miroirs
+- Demande maman
+    - Poubelle
+    - Monter bureau
+    - Sac linge salle (osier)
+    - rallonge
+    - boule bleu
+    - imper/manteau cuir
+    - cintres (10)
+    - plantes
+    - 
+- Check reading group
+- Aller remplir sa plume
+
 # Time Sensitive
-- Give expense report ICLR
 - Make expense report ICML
 - CAMSAP paper (Active Learning)
 - Renew permit
 - Check phd
 - Code BGCN
 - Paper Soumya
-- Demenage Lea
-- Ikea Muberra
 
 # Academic
 - git lab/ datastes
@@ -30,10 +46,8 @@
 
 # Other
 - buy headphone/ jey
-- paye hydro
 - Pay melissa Bussell champagne
 - Pay muberra 
-- Appart compte
 - Collect wash machine
 
 
