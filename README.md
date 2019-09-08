@@ -5,7 +5,7 @@
 # Time Sensitive
 - Make expense report ICML
 - Check phd
-- Code BGCN
+- 
 
 # Academic
 - git lab/ datastes
