@@ -1,7 +1,10 @@
+# Today
+- Try website
+- check phd, all doc
+- update cv
 
 # Time Sensitive
 - Check phd
-- 
 - opus
   
 
@@ -12,6 +15,7 @@
 
 # Work
 - review cv
+- fix lab 4
 
 # Ask Mark
 
