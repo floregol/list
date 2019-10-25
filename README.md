@@ -1,23 +1,22 @@
 # Today
-- Try website
-- check phd, all doc
-- update cv
+- set up magnetic laplacian project
 
 # Time Sensitive
-- Check phd
-- opus
-  
+- workshop machine learning
+- dynamic stuff
+- active learning
+- bgcn recommender system
 
 # Academic
 - pgm
 - review notes stephen
-- Particle filtering
+- add stuff on arxiv
 
 # Work
-- review cv
 - fix lab 4
 
 # Ask Mark
+- active learning sreenath
 
 # Other
 - buy headphone/ jey
