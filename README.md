@@ -20,7 +20,6 @@
 
 # Other
 - buy headphone/ jey
-- Pay muberra 
-- Collect wash machine
+- Pay muberra 100
 
 
