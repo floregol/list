@@ -1,5 +1,9 @@
 # Today
-- set up magnetic laplacian project
+- write initial experiment antonios
+- dynamic set up code
+- sreenath active learning talk with Mark, how the graph is incorporated
+- write experiment active learning fast eem
+- workshop talk to maru 
 
 # Time Sensitive
 - workshop machine learning
@@ -16,7 +20,6 @@
 - fix lab 4
 
 # Ask Mark
-- active learning sreenath
 
 # Other
 - buy headphone/ jey
