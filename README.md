@@ -1,13 +1,11 @@
 # Today
+- review notes math 557
 
 # Time Sensitive
-- active learning
-- bgcn recommender system
-- Copying
 
 # Academic
 - check phd
-- sign phd
+- website
 
 # Work
 
@@ -17,6 +15,6 @@
 - buy headphone/ jey
 
 # Learn
-- Measurment theory
-- stati
+- Measure theory
+- stats
 - 
