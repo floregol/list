@@ -1,65 +1,36 @@
-
 import os
 import click
-LIST_PATH = 'data'
+from utils.display_utils import print_color, announce_list, announce_add_step, announce_display_step, announce_delete_step
+from utils.file_utils import *
 MAIN_LIST_NAME = 'main'
-MAIN_LIST_FILENAME = MAIN_LIST_NAME + '.txt'
-MAIN_LIST_FILEPATH = os.path.join(LIST_PATH, MAIN_LIST_FILENAME)
 
-
-def check_set_up():  # make sure a list is there and the fodlers is all set up
-    if os.path.exists(MAIN_LIST_FILEPATH):
-        return
-    else:  # create it
-        try:
-            os.makedirs(os.path.dirname(MAIN_LIST_FILEPATH))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-
-        with open(MAIN_LIST_FILEPATH, "w") as f:
-            f.write(MAIN_LIST_NAME + '\n')
-
-
-def process_line_item(line_file):
-    return line_file.strip()
-
-def list_name_to_path(list_name):
-    return os.path.join(LIST_PATH, list_name + '.txt')
 
 def load_items_from_list(list_name):
-    list_filepath = list_name_to_path(list_name)
-
-    list_items = []
-    with open(list_filepath, 'r') as f:
-        for line in f.readlines():
-            list_items.append(process_line_item(line))
-    return list_items
+    return iterate_items_from_list(list_name, process_line_item)
 
 
+def check_if_deleted(item):
+    return item[0:3] == '(d)'
 def dispay_list(list_name=MAIN_LIST_NAME):
-    # check up
-    check_set_up()
-    click.clear()
+
+    announce_display_step()
     list_items = load_items_from_list(list_name)
-    print('LIST :  %s' % list_items[0])
-    for item in list_items[1:]: 
-        print('\t - %s' % item)
+    announce_list(list_name)
+    for item in list_items[1:]:
+        if check_if_deleted(item):  # to be deleted print in red
+            text = '\t - %s' % item
+            print_color(text, 'R')
+        else:
+            print('\t - %s' % item)
+    print()
 
-
-def prompt_for_item():
-    item = input ("item to add : ") 
-    if item == '':
-        return None
-    else:
-        return item
-    
 
 def add_to_list(list_name=MAIN_LIST_NAME):
-    click.clear()
+    announce_add_step()
+
     adding_items = True
     list_items = []
-    while adding_items :
+    while adding_items:
         item = prompt_for_item()
         if item is not None:
             list_items.append(item)
@@ -71,7 +42,44 @@ def add_to_list(list_name=MAIN_LIST_NAME):
             f.write("%s\n" % item)
 
 
+def delete_from_list(list_name=MAIN_LIST_NAME):
+    announce_delete_step()
+
+    check_set_up()
+
+    list_items = load_items_from_list(list_name)
+    line_to_mark = []  # mark the line as deleted
+    line_to_delete = [] # delete the items previously deleted
+
+    for i, item in enumerate(list_items[1:]):
+        if check_if_deleted(item):
+            line_to_delete.append(i)
+        else:
+            answer = input('Did you completed -' + item + ' ? ')
+            if answer == 'd' or answer == 'y':
+                print('Completed the task', item)
+                line_to_mark.append(i)
+
+    if len(line_to_mark) > 0 or len(line_to_delete) > 0:
+        raw_lines = iterate_items_from_list(list_name, lambda x: x)
+        list_filepath = list_name_to_path(list_name)
+        with open(list_filepath, "w") as f:
+            f.write(list_name + '\n')
+            for i, line in enumerate(raw_lines[1:]):
+                if i in line_to_mark:
+                    f.write('(d) ' + line)
+                elif not(i in line_to_delete):
+                    f.write(line)
+                else:
+                    print('not',i)
+                    print(line_to_delete)
+    else:
+        print()
+        print('wow so lazy')
+
+
 if __name__ == '__main__':
-    
+
+    delete_from_list()
     add_to_list()
     dispay_list()
