@@ -2,15 +2,16 @@ import os
 import click
 from utils.display_utils import print_color, announce_list, announce_add_step, announce_display_step, announce_delete_step
 from utils.file_utils import *
-MAIN_LIST_NAME = 'main'
 
+MAIN_LIST_NAME = 'main'
+DELETED_MARKER = '(done)'
 
 def load_items_from_list(list_name):
     return iterate_items_from_list(list_name, process_line_item)
 
 
 def check_if_deleted(item):
-    return item[0:3] == '(d)'
+    return item[0:3] == DELETED_MARKER
 def dispay_list(list_name=MAIN_LIST_NAME):
 
     announce_display_step()
@@ -67,7 +68,7 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
             f.write(list_name + '\n')
             for i, line in enumerate(raw_lines[1:]):
                 if i in line_to_mark:
-                    f.write('(d) ' + line)
+                    f.write(DELETED_MARKER + line)
                 elif not(i in line_to_delete):
                     f.write(line)
                 else:
