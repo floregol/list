@@ -11,7 +11,7 @@ def load_items_from_list(list_name):
 
 
 def check_if_deleted(item):
-    return item[0:3] == DELETED_MARKER
+    return item[0:6] == DELETED_MARKER
 def dispay_list(list_name=MAIN_LIST_NAME):
 
     announce_display_step()
@@ -57,7 +57,7 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
             line_to_delete.append(i)
         else:
             answer = input('Did you completed -' + item + ' ? ')
-            if answer == 'd' or answer == 'y':
+            if answer == 'd' or answer == 'y' or answer == 'yes' :
                 print('Completed the task', item)
                 line_to_mark.append(i)
 
