@@ -1,7 +1,7 @@
 # Description
 
 ## Command line small program to keep track of lists of things to do.
-The program iterates through 3 steps.
+The program iterates through 3 steps. To run : `python main.py`
 ### [1] Delete items
 ### [2] Add items
 ### [3] Display list of items
