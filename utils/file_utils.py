@@ -37,7 +37,7 @@ def prompt_for_list_name():
                 return list_name
 
 
-def delete_list(list_name):
+def delete_list_file(list_name):
     list_filepath = list_name_to_path(list_name)
     os.remove(list_filepath)
 

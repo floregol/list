@@ -120,7 +120,7 @@ def delete_list():
     announce_delete_list()
     for list_name in all_lists_in_order():
         if ask_question_user('Should we delete list ' + list_name + ' ? '):
-            delete_list(list_name)
+            delete_list_file(list_name)
 
 if __name__ == '__main__':
     check_set_up()
@@ -133,3 +133,4 @@ if __name__ == '__main__':
     elif sys.argv[1] == '-m':  # manage mode
         add_list()
         delete_list()
+        dispay_list()
