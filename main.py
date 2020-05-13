@@ -1,7 +1,9 @@
-import sys
+import sys, re
 from datetime import datetime
 from utils.display_utils import *
 from utils.file_utils import *
+from termcolor import colored
+
 
 MAIN_LIST_NAME = 'main'
 DELETED_MARKER = '(done)'
@@ -21,7 +23,15 @@ def display_list(list_name=MAIN_LIST_NAME):
                 text = '\t - %s' % item
                 print_color(text, 'R')
             else:
-                print('\t - %s' % item)
+                # print('\t - %s' % item)
+                text = '\t - %s' % item
+                check_time = re.search(r'([0-9]+d[0-9]+h[0-9]+m)', text, re.M|re.I)
+                if check_time:
+                    check_time = check_time.group()
+                    print(text[:-len(check_time)-2], colored(text[-len(check_time)-2:], 'red'))
+                else:
+                    print(text)
+
         print()
 
 

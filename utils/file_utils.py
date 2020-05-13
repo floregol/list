@@ -87,8 +87,7 @@ def process_line_item_with_time(line_file):
         hours = divmod(days[1], 3600)
         minutes = divmod(hours[1], 60)
         diff = "(%dd%dh%dm)" % (days[0], hours[0], minutes[0])
-        line_file = todo + ' ' + diff
-        return line_file
+        return todo + ' ' + diff
     else:
         return line_file[0]
 
