@@ -8,19 +8,14 @@ MAIN_LIST_NAME = 'main'
 DELETED_MARKER = '(done)'
 
 
-def load_items_from_list(list_name):
-    return iterate_items_from_list(list_name, process_line_item)
-
-
 def check_if_deleted(item):
-    return item[0:6] == DELETED_MARKER
+    return item[0:len(DELETED_MARKER)] == DELETED_MARKER
 
 
 def dispay_list(list_name=MAIN_LIST_NAME):
-
     announce_display_step()
     for list_name in all_lists_in_order():
-        list_items = load_items_from_list(list_name)
+        list_items = iterate_items_from_list(list_name, process_line_item)
         announce_list(list_name)
         for item in list_items[1:]:
             if check_if_deleted(item):  # to be deleted print in red
@@ -37,7 +32,7 @@ def add_to_list(list_name=MAIN_LIST_NAME):
     for list_name in all_lists_in_order():
 
         if not isFirst:  # ask if we should continue
-            update_this_list = ask_user('Should we update list ' + list_name + ' ?')
+            update_this_list = ask_question_user('Should we update list ' + list_name + ' ? ')
         if update_this_list:
             announce_add_step()
             announce_list(list_name)
@@ -63,11 +58,11 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
     for list_name in all_lists_in_order():
 
         if not isFirst:  # ask if we should continue
-            update_this_list = ask_user('Should we update list ' + list_name + ' ?')
+            update_this_list = ask_question_user('Should we update list ' + list_name + ' ? ')
         if update_this_list:
             announce_delete_step()
             announce_list(list_name)
-            list_items = load_items_from_list(list_name)
+            list_items = iterate_items_from_list(list_name, process_line_item)
             line_to_mark = []  # mark the line as deleted
             line_to_delete = []  # delete the items previously deleted
 
@@ -75,8 +70,7 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
                 if check_if_deleted(item):
                     line_to_delete.append(i)
                 else:
-                    answer = input('Did you completed -' + item + ' ? ')
-                    if answer == 'd' or answer == 'y' or answer == 'yes':
+                    if ask_question_user('Did you completed -' + item + ' ? '):
                         print('Completed the task', item)
                         line_to_mark.append(i)
 
@@ -90,18 +84,31 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
                             f.write(DELETED_MARKER + line)
                         elif not (i in line_to_delete):
                             f.write(line)
-                        else:
-                            print('not', i)
-                            print(line_to_delete)
+
             else:
-                print()
-                print('wow so lazy')
-                input()
+                tell_the_user_he_is_lazy()
+        else:  # still have to go throught items to remove unused
+            list_items = iterate_items_from_list(list_name, process_line_item)
+            line_to_delete = []  # delete the items previously deleted
+
+            for i, item in enumerate(list_items[1:]):
+                if check_if_deleted(item):
+                    line_to_delete.append(i)
+
+            if len(line_to_delete) > 0:
+                raw_lines = iterate_items_from_list(list_name, lambda x: x)
+                list_filepath = list_name_to_path(list_name)
+                with open(list_filepath, "w") as f:
+                    f.write(list_name + '\n')
+                    for i, line in enumerate(raw_lines[1:]):
+                        if not (i in line_to_delete):
+                            f.write(line)
 
         isFirst = False
 
 
 def add_list():
+    announce_add_list()
     new_list_name = prompt_for_list_name()
     if new_list_name is not None:
         create_list_file(new_list_name)
@@ -110,8 +117,10 @@ def add_list():
 
 
 def delete_list():
-    pass
-
+    announce_delete_list()
+    for list_name in all_lists_in_order():
+        if ask_question_user('Should we delete list ' + list_name + ' ? '):
+            delete_list(list_name)
 
 if __name__ == '__main__':
     check_set_up()

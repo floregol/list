@@ -7,7 +7,7 @@ TRED = '\033[31m'
 valid_yes = ['yes', 'y', 'YES', 'Y']
 valid_no = ['no', 'n', 'NO', 'N']
 
-def ask_user(question):
+def ask_question_user(question):
     answer = input(question)
     if answer in valid_yes:
         return True
@@ -19,7 +19,10 @@ def print_color(text, color):
     elif color == 'R':
         print(TRED + text, TEND)
 
-
+def tell_the_user_he_is_lazy():
+    print()
+    print('wow so lazy')
+    input()
 def validate_input(name):
     while True:
         answer = input('Is ' + name + " right? ")
@@ -49,6 +52,11 @@ def announce_step(step_message):
     print()
     print()
 
+def announce_add_list():
+    announce_step('Adding list')
+
+def announce_delete_list():
+    announce_step('Deleting lists')
 
 def announce_list(list_name):
     print('List : ', list_name)
