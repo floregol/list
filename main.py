@@ -125,9 +125,7 @@ def delete_list():
 if __name__ == '__main__':
     check_set_up()
 
-    if len(sys.argv) == 1:  # default mode, go through last updated list, add to last updated list and display lists
-        delete_from_list()
-        add_to_list()
+    if len(sys.argv) == 1:  # default mode, display lists
         display_list()
 
     elif sys.argv[1] == '-m':  # manage mode
@@ -135,5 +133,7 @@ if __name__ == '__main__':
         delete_list()
         display_list()
 
-    elif sys.argv[1] == '-d':
+    elif sys.argv[1] == '-u': # go through last updated list, add to last updated list and display
+        delete_from_list()
+        add_to_list()
         display_list()
