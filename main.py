@@ -1,6 +1,5 @@
-import os
 import sys
-import click
+from datetime import datetime
 from utils.display_utils import *
 from utils.file_utils import *
 
@@ -12,10 +11,10 @@ def check_if_deleted(item):
     return item[0:len(DELETED_MARKER)] == DELETED_MARKER
 
 
-def dispay_list(list_name=MAIN_LIST_NAME):
+def display_list(list_name=MAIN_LIST_NAME):
     announce_display_step()
     for list_name in all_lists_in_order():
-        list_items = iterate_items_from_list(list_name, process_line_item)
+        list_items = iterate_items_from_list(list_name, process_line_item_with_time)
         announce_list(list_name)
         for item in list_items[1:]:
             if check_if_deleted(item):  # to be deleted print in red
@@ -47,7 +46,7 @@ def add_to_list(list_name=MAIN_LIST_NAME):
             list_filepath = list_name_to_path(list_name)
             with open(list_filepath, "a") as f:
                 for item in list_items:
-                    f.write("%s\n" % item)
+                    f.write("%s\t%s\n" % (item, str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))))
 
         isFirst = False
 
@@ -113,7 +112,7 @@ def add_list():
     if new_list_name is not None:
         create_list_file(new_list_name)
         add_to_list(new_list_name)
-        dispay_list(new_list_name)
+        display_list(new_list_name)
 
 
 def delete_list():
@@ -122,15 +121,19 @@ def delete_list():
         if ask_question_user('Should we delete list ' + list_name + ' ? '):
             delete_list_file(list_name)
 
+
 if __name__ == '__main__':
     check_set_up()
 
-    if len(sys.argv) == 1:  # default mode, go throught last updated list, add to last udated list and display lists
+    if len(sys.argv) == 1:  # default mode, go through last updated list, add to last updated list and display lists
         delete_from_list()
         add_to_list()
-        dispay_list()
+        display_list()
 
     elif sys.argv[1] == '-m':  # manage mode
         add_list()
         delete_list()
-        dispay_list()
+        display_list()
+
+    elif sys.argv[1] == '-d':
+        display_list()

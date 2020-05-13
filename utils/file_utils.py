@@ -1,8 +1,8 @@
 import os
-from os import listdir
-from os.path import isfile, join
-from utils.display_utils import validate_input
 from pathlib import Path
+from datetime import datetime
+from utils.display_utils import validate_input
+
 LIST_PATH = 'data'
 MAIN_LIST_NAME = 'main'
 MAIN_LIST_FILENAME = MAIN_LIST_NAME + '.txt'
@@ -10,10 +10,8 @@ MAIN_LIST_FILEPATH = os.path.join(LIST_PATH, MAIN_LIST_FILENAME)
 
 
 def all_lists_in_order():
-    
-
     paths = sorted(Path(LIST_PATH).iterdir(), key=os.path.getmtime, reverse=True)
-    
+
     list_names = [f.parts[-1].split('.')[0] for f in paths]
     return list_names
 
@@ -73,6 +71,26 @@ def check_set_up():  # make sure a list is there and the fodlers is all set up
 
 def process_line_item(line_file):
     return line_file.strip()
+
+
+def process_line_item_with_time(line_file):
+    line_file = line_file.strip()
+    line_file = line_file.split('\t')
+    if len(line_file) > 1:
+        todo, then = line_file[0], line_file[1]
+        # now = str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+        then = list(map(int, then.split('-')))
+        then = datetime(*then)
+        time_diff = datetime.now() - then
+        time_diff_in_sec = time_diff.total_seconds()
+        days = divmod(time_diff_in_sec, 86400)  # Get days (without [0]!)
+        hours = divmod(days[1], 3600)
+        minutes = divmod(hours[1], 60)
+        diff = "(%dd%dh%dm)" % (days[0], hours[0], minutes[0])
+        line_file = todo + ' ' + diff
+        return line_file
+    else:
+        return line_file[0]
 
 
 def list_name_to_path(list_name):
