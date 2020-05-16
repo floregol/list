@@ -75,7 +75,6 @@ def process_line_item(line_file):
         hours = divmod(days[1], 3600)
         minutes = divmod(hours[1], 60)
         diff = "(%dd%dh%dm)" % (days[0], hours[0], minutes[0])
-<<<<<<< HEAD
         line_file = todo + ' ' + diff
         return line_file
     elif len(line_file) == 3:  # deprecated
@@ -111,9 +110,6 @@ def process_line_item(line_file):
 
             return line_file, 'R'
         return line_file
-=======
-        return todo + ' ' + diff
->>>>>>> ac9435d9f21225680fa94baaa6d2cdc33943fa41
     else:
         return line_file[0]
 
