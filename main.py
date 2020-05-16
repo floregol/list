@@ -1,7 +1,9 @@
-import sys
+import sys, re
 from datetime import datetime
 from utils.display_utils import *
 from utils.file_utils import *
+from termcolor import colored
+
 
 MAIN_LIST_NAME = 'main'
 DELETED_MARKER = '(done)'
