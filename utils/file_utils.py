@@ -16,14 +16,6 @@ def all_lists_in_order():
     return list_names
 
 
-def prompt_for_item():
-    item = input("item to add : ")
-    if item == '':
-        return None
-    else:
-        return item
-
-
 def prompt_for_list_name():
     while True:
         list_name = input("list to create : ")
@@ -70,13 +62,9 @@ def check_set_up():  # make sure a list is there and the fodlers is all set up
 
 
 def process_line_item(line_file):
-    return line_file.strip()
-
-
-def process_line_item_with_time(line_file):
     line_file = line_file.strip()
     line_file = line_file.split('\t')
-    if len(line_file) > 1:
+    if len(line_file) == 2:  # deprecated
         todo, then = line_file[0], line_file[1]
         # now = str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
         then = list(map(int, then.split('-')))
@@ -88,6 +76,39 @@ def process_line_item_with_time(line_file):
         minutes = divmod(hours[1], 60)
         diff = "(%dd%dh%dm)" % (days[0], hours[0], minutes[0])
         line_file = todo + ' ' + diff
+        return line_file
+    elif len(line_file) == 3:  # deprecated
+        todo, start_time, due = line_file[0], line_file[1], line_file[2]
+
+        start_time = list(map(int, start_time.split('-')))
+        start_time = datetime(*start_time)
+
+        due = list(map(int, due.split('-')))
+        due = datetime(*due)
+
+        time_diff = due - datetime.now()
+        time_diff_in_sec = time_diff.total_seconds()
+
+        days = divmod(time_diff_in_sec, 86400)  # Get days (without [0]!)
+        hours = divmod(days[1], 3600)
+        minutes = divmod(hours[1], 60)
+
+        total_diff = due - start_time
+        total_diff_in_sec = total_diff.total_seconds()
+
+        percent_ongoing = 100 * (1 - (time_diff_in_sec / total_diff_in_sec))
+
+        if days[0] > 0:
+            diff = "\t(due in %d day(s), %.2f%% time passed)" % (days[0], percent_ongoing)
+        elif hours[0] > 0:
+            diff = "\t(due in %d hour(s), %.2f%% time passed)" % (hours[0], percent_ongoing)
+        elif minutes[0] > 0:
+            diff = "\t(due in %d minute(s), %.2f%% time passed)" % (minutes[0], percent_ongoing)
+
+        line_file = todo + ' ' + diff
+        if percent_ongoing > 30:
+
+            return line_file, 'R'
         return line_file
     else:
         return line_file[0]

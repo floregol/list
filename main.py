@@ -14,18 +14,22 @@ def check_if_deleted(item):
 def display_list(list_name=MAIN_LIST_NAME):
     announce_display_step()
     for list_name in all_lists_in_order():
-        list_items = iterate_items_from_list(list_name, process_line_item_with_time)
+        list_items = iterate_items_from_list(list_name, process_line_item)
         announce_list(list_name)
         for item in list_items[1:]:
+            color = 'B'
+            if type(item) is tuple:
+                color = item[1]
+                item = item[0]
             if check_if_deleted(item):  # to be deleted print in red
-                text = '\t - %s' % item
-                print_color(text, 'R')
-            else:
-                print('\t - %s' % item)
+                color = 'G'
+            text = '\t - %s' % item
+            print_color(text, color)
+
         print()
 
 
-def add_to_list(list_name=MAIN_LIST_NAME):
+def add_to_list(time_option=False, list_name=MAIN_LIST_NAME):
     isFirst = True
     update_this_list = True
     for list_name in all_lists_in_order():
@@ -40,13 +44,21 @@ def add_to_list(list_name=MAIN_LIST_NAME):
             while adding_items:
                 item = prompt_for_item()
                 if item is not None:
-                    list_items.append(item)
+                    if time_option:
+                        deadline = prompt_for_deadline()
+                        list_items.append((item, deadline))
+                    else:
+                        list_items.append((item, None))
                 else:
                     adding_items = False
             list_filepath = list_name_to_path(list_name)
             with open(list_filepath, "a") as f:
-                for item in list_items:
-                    f.write("%s\t%s\n" % (item, str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))))
+                for item_tuple in list_items:
+                    if item_tuple[1] is not None:
+                        f.write("%s\t%s\t%s\n" % (item_tuple[0], str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S")),
+                                                  str(item_tuple[1].strftime("%Y-%m-%d-%H-%M-%S"))))
+                    else:
+                        f.write("%s\n" % item_tuple[0])
 
         isFirst = False
 
@@ -133,7 +145,8 @@ if __name__ == '__main__':
         delete_list()
         display_list()
 
-    elif sys.argv[1] == '-u': # go through last updated list, add to last updated list and display
+    elif sys.argv[1] == '-u':  # go through last updated list, add to last updated list and display
+        time_option = (len(sys.argv) > 2) and (sys.argv[2] == '-t')
         delete_from_list()
-        add_to_list()
+        add_to_list(time_option=time_option)
         display_list()

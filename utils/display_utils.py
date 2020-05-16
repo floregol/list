@@ -1,11 +1,36 @@
 import click
-
+from utils.time_utils import check_for_valid_time
 TGREEN = '\033[32m'
 TEND = '\033[m'
 TRED = '\033[31m'
 
 valid_yes = ['yes', 'y', 'YES', 'Y']
 valid_no = ['no', 'n', 'NO', 'N']
+
+
+def prompt_for_item():
+    item = input("item to add : ")
+    if item == '':
+        return None
+    else:
+        return item
+
+
+def prompt_for_deadline():
+    not_valid_input = True
+    while not_valid_input:
+        str_input_amount_time = input('\t time to complete : ')
+        if str_input_amount_time == '':
+            print('\t ok no deadline')
+            return None
+        date_dealine = check_for_valid_time(str_input_amount_time)
+        if date_dealine is None:
+            print()
+            print('This is not a valid time format.')
+            print('To set the deadline in 3 days, type 3d. (h for hour, w for week and m for month)')
+            print()
+        else:
+            return date_dealine
 
 
 def ask_question_user(question):
@@ -20,6 +45,8 @@ def print_color(text, color):
         print(TGREEN + text, TEND)
     elif color == 'R':
         print(TRED + text, TEND)
+    elif color == 'B':
+        print(text)
 
 
 def tell_the_user_he_is_lazy():
@@ -69,3 +96,4 @@ def announce_delete_list():
 def announce_list(list_name):
     print('List : ', list_name)
     print('-----------------')
+
