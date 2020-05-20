@@ -1,5 +1,6 @@
 
 DELETED_MARKER = '(done)'
+PERCENT_RED_DISPLAY = 80
 from datetime import datetime
 
 class Item:
@@ -52,7 +53,7 @@ class Item:
             color = 'G'
         elif self.is_time_based_item:
             percent, time_display = self.check_how_close_to_completion()
-            if percent > 30:
+            if percent > PERCENT_RED_DISPLAY:
                 color = 'R'
             return self.todo + time_display, color
         return self.todo, color
