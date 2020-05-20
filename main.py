@@ -7,8 +7,9 @@ from utils.Item import Item
 MAIN_LIST_NAME = 'main'
 DELETED_MARKER = '(done)'
 
+
 def display_list():
-    announce_display_step()
+    announce_display_step()  # print on cmd that we are on display step
     for list_name in all_lists_in_order():
         list_items = iterate_items_from_list(list_name, process_line_item)
         announce_list(list_name)
@@ -19,11 +20,10 @@ def display_list():
         print()
 
 
-def add_to_list(time_option=False):
+def add_to_list(time_option=False, single_list_addition_name=None):
     isFirst = True
     update_this_list = True
     for list_name in all_lists_in_order():
-
         if not isFirst:  # ask if we should continue
             update_this_list = ask_question_user('Should we update list ' + list_name + ' ? ')
         if update_this_list:
@@ -47,6 +47,8 @@ def add_to_list(time_option=False):
             with open(list_filepath, "a") as f:
                 for item in list_items:
                     f.write(item.item_to_str_for_file())
+        if single_list_addition_name is not None:  # single list addition, we dont ask for the other list
+            return
 
         isFirst = False
 
@@ -69,7 +71,7 @@ def delete_from_list():
                 if item.is_completed:
                     line_to_delete.append(i)
                 else:
-                    if ask_question_user('Did you completed -' + item.todo + ' ? '):
+                    if ask_question_user('Did you completed - ' + item.todo + ' ? '):
                         print('Completed the task', item.todo)
                         line_to_mark.append(i)
 
@@ -84,7 +86,7 @@ def delete_from_list():
                         elif not (i in line_to_delete):
                             f.write(line)
 
-            else:
+            elif len(list_items) > 1:  # if the list contained items to start
                 tell_the_user_he_is_lazy()
         else:  # still have to go throught items to remove unused
             list_items = iterate_items_from_list(list_name, process_line_item)
@@ -111,7 +113,7 @@ def add_list():
     new_list_name = prompt_for_list_name()
     if new_list_name is not None:
         create_list_file(new_list_name)
-        add_to_list()
+        add_to_list(single_list_addition_name=new_list_name)
         display_list()
 
 

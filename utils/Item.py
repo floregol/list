@@ -1,6 +1,7 @@
 
 DELETED_MARKER = '(done)'
 PERCENT_RED_DISPLAY = 80
+PERCENT_YELLOW_DISPLAY = 50
 from datetime import datetime
 
 class Item:
@@ -37,12 +38,17 @@ class Item:
         percent_ongoing = 100 * (1 - (time_diff_in_sec / total_diff_in_sec))
 
         if days[0] > 0:
-            time_display = "\t(due in %d day(s), %.2f%% time passed)" % (days[0], percent_ongoing)
+            time_display = "\t[ due in %d day" % days[0]
+            if days[0] > 1:
+                time_display += 's ]'
         elif hours[0] > 0:
-            time_display = "\t(due in %d hour(s), %.2f%% time passed)" % (hours[0], percent_ongoing)
+            time_display = "\t[ due in %d hour" % hours[0]
+            if hours[0] > 1:
+                time_display += 's ]'
         elif minutes[0] > 0:
-            time_display = "\t(due in %d minute(s), %.2f%% time passed)" % (minutes[0], percent_ongoing)
-
+            time_display = "\t[ due in %d minute" % minutes[0]
+            if minutes[0] > 1:
+                time_display += 's ]'
         
         return percent_ongoing, time_display
 
@@ -55,6 +61,8 @@ class Item:
             percent, time_display = self.check_how_close_to_completion()
             if percent > PERCENT_RED_DISPLAY:
                 color = 'R'
+            elif percent > PERCENT_YELLOW_DISPLAY:
+                color = 'Y'
             return self.todo + time_display, color
         return self.todo, color
 

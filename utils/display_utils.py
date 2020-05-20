@@ -3,6 +3,7 @@ from utils.time_utils import check_for_valid_time
 TGREEN = '\033[32m'
 TEND = '\033[m'
 TRED = '\033[31m'
+TYEL = '\033[33m'
 
 valid_yes = ['yes', 'y', 'YES', 'Y']
 valid_no = ['no', 'n', 'NO', 'N']
@@ -47,6 +48,8 @@ def print_color(text, color):
         print(TRED + text, TEND)
     elif color == 'B':
         print(text)
+    elif color == 'Y':
+        print(TYEL + text, TEND)
 
 
 def tell_the_user_he_is_lazy():
