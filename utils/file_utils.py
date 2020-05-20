@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 from utils.display_utils import validate_input
+from utils.Item import str_to_token, Item
 
 LIST_PATH = 'data'
 MAIN_LIST_NAME = 'main'
@@ -11,7 +12,6 @@ MAIN_LIST_FILEPATH = os.path.join(LIST_PATH, MAIN_LIST_FILENAME)
 
 def all_lists_in_order():
     paths = sorted(Path(LIST_PATH).iterdir(), key=os.path.getmtime, reverse=True)
-
     list_names = [f.parts[-1].split('.')[0] for f in paths]
     return list_names
 
@@ -62,56 +62,30 @@ def check_set_up():  # make sure a list is there and the fodlers is all set up
 
 
 def process_line_item(line_file):
-    line_file = line_file.strip()
-    line_file = line_file.split('\t')
-    if len(line_file) == 2:  # deprecated
-        todo, then = line_file[0], line_file[1]
+    line_file_token = str_to_token(line_file)
+    if len(line_file_token) == 2:  # deprecated
+        todo, creation_time = line_file_token[0], line_file_token[1]
         # now = str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
-        then = list(map(int, then.split('-')))
-        then = datetime(*then)
-        time_diff = datetime.now() - then
-        time_diff_in_sec = time_diff.total_seconds()
-        days = divmod(time_diff_in_sec, 86400)  # Get days (without [0]!)
-        hours = divmod(days[1], 3600)
-        minutes = divmod(hours[1], 60)
-        diff = "(%dd%dh%dm)" % (days[0], hours[0], minutes[0])
-        line_file = todo + ' ' + diff
-        return line_file
-    elif len(line_file) == 3:  # deprecated
-        todo, start_time, due = line_file[0], line_file[1], line_file[2]
+        creation_time = list(map(int, creation_time.split('-')))
+        creation_time = datetime(*creation_time)
 
-        start_time = list(map(int, start_time.split('-')))
-        start_time = datetime(*start_time)
+        item = Item(todo=todo, creation_time=creation_time)
 
-        due = list(map(int, due.split('-')))
-        due = datetime(*due)
+        return item
+    elif len(line_file_token) == 3:
+        todo, creation_time, due_date = line_file_token[0], line_file_token[1], line_file_token[2]
 
-        time_diff = due - datetime.now()
-        time_diff_in_sec = time_diff.total_seconds()
+        creation_time = list(map(int, creation_time.split('-')))
+        creation_time = datetime(*creation_time)
 
-        days = divmod(time_diff_in_sec, 86400)  # Get days (without [0]!)
-        hours = divmod(days[1], 3600)
-        minutes = divmod(hours[1], 60)
+        due_date = list(map(int, due_date.split('-')))
+        due_date = datetime(*due_date)
 
-        total_diff = due - start_time
-        total_diff_in_sec = total_diff.total_seconds()
+        item = Item(todo=todo, creation_time=creation_time, due_date=due_date)
 
-        percent_ongoing = 100 * (1 - (time_diff_in_sec / total_diff_in_sec))
-
-        if days[0] > 0:
-            diff = "\t(due in %d day(s), %.2f%% time passed)" % (days[0], percent_ongoing)
-        elif hours[0] > 0:
-            diff = "\t(due in %d hour(s), %.2f%% time passed)" % (hours[0], percent_ongoing)
-        elif minutes[0] > 0:
-            diff = "\t(due in %d minute(s), %.2f%% time passed)" % (minutes[0], percent_ongoing)
-
-        line_file = todo + ' ' + diff
-        if percent_ongoing > 30:
-
-            return line_file, 'R'
-        return line_file
+        return item
     else:
-        return line_file[0]
+        return Item(todo=line_file_token[0])
 
 
 def list_name_to_path(list_name):

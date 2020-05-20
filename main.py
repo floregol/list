@@ -3,35 +3,23 @@ from datetime import datetime
 from utils.display_utils import *
 from utils.file_utils import *
 from termcolor import colored
-
-
+from utils.Item import Item
 MAIN_LIST_NAME = 'main'
 DELETED_MARKER = '(done)'
 
-
-def check_if_deleted(item):
-    return item[0:len(DELETED_MARKER)] == DELETED_MARKER
-
-
-def display_list(list_name=MAIN_LIST_NAME):
+def display_list():
     announce_display_step()
     for list_name in all_lists_in_order():
         list_items = iterate_items_from_list(list_name, process_line_item)
         announce_list(list_name)
         for item in list_items[1:]:
-            color = 'B'
-            if type(item) is tuple:
-                color = item[1]
-                item = item[0]
-            if check_if_deleted(item):  # to be deleted print in red
-                color = 'G'
-            text = '\t - %s' % item
-            print_color(text, color)
+            text_display, color = item.display_item()
+            print_color('\t - %s' % text_display, color)
 
         print()
 
 
-def add_to_list(time_option=False, list_name=MAIN_LIST_NAME):
+def add_to_list(time_option=False):
     isFirst = True
     update_this_list = True
     for list_name in all_lists_in_order():
@@ -44,28 +32,26 @@ def add_to_list(time_option=False, list_name=MAIN_LIST_NAME):
             adding_items = True
             list_items = []
             while adding_items:
-                item = prompt_for_item()
-                if item is not None:
+                text_item = prompt_for_item()
+                if text_item is not None:
                     if time_option:
-                        deadline = prompt_for_deadline()
-                        list_items.append((item, deadline))
+                        due_date = prompt_for_deadline()
+                        creation_time = datetime.now()
+                        item = Item(todo=text_item, creation_time=creation_time, due_date=due_date)
                     else:
-                        list_items.append((item, None))
+                        item = Item(todo=text_item)
+                    list_items.append(item)
                 else:
                     adding_items = False
             list_filepath = list_name_to_path(list_name)
             with open(list_filepath, "a") as f:
-                for item_tuple in list_items:
-                    if item_tuple[1] is not None:
-                        f.write("%s\t%s\t%s\n" % (item_tuple[0], str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S")),
-                                                  str(item_tuple[1].strftime("%Y-%m-%d-%H-%M-%S"))))
-                    else:
-                        f.write("%s\n" % item_tuple[0])
+                for item in list_items:
+                    f.write(item.item_to_str_for_file())
 
         isFirst = False
 
 
-def delete_from_list(list_name=MAIN_LIST_NAME):
+def delete_from_list():
     isFirst = True
     update_this_list = True
     for list_name in all_lists_in_order():
@@ -80,11 +66,11 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
             line_to_delete = []  # delete the items previously deleted
 
             for i, item in enumerate(list_items[1:]):
-                if check_if_deleted(item):
+                if item.is_completed:
                     line_to_delete.append(i)
                 else:
-                    if ask_question_user('Did you completed -' + item + ' ? '):
-                        print('Completed the task', item)
+                    if ask_question_user('Did you completed -' + item.todo + ' ? '):
+                        print('Completed the task', item.todo)
                         line_to_mark.append(i)
 
             if len(line_to_mark) > 0 or len(line_to_delete) > 0:
@@ -105,7 +91,7 @@ def delete_from_list(list_name=MAIN_LIST_NAME):
             line_to_delete = []  # delete the items previously deleted
 
             for i, item in enumerate(list_items[1:]):
-                if check_if_deleted(item):
+                if item.is_time_based_item:
                     line_to_delete.append(i)
 
             if len(line_to_delete) > 0:
@@ -125,8 +111,8 @@ def add_list():
     new_list_name = prompt_for_list_name()
     if new_list_name is not None:
         create_list_file(new_list_name)
-        add_to_list(new_list_name)
-        display_list(new_list_name)
+        add_to_list()
+        display_list()
 
 
 def delete_list():
