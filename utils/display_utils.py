@@ -1,5 +1,6 @@
-import click
 from utils.time_utils import check_for_valid_time
+import os
+
 TGREEN = '\033[32m'
 TEND = '\033[m'
 TRED = '\033[31m'
@@ -82,7 +83,7 @@ def announce_display_step():
 
 
 def announce_step(step_message):
-    click.clear()
+    os.system('clear')
     print('######    ' + step_message + '    ######')
     print()
     print()
